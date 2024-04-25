@@ -1,7 +1,20 @@
 {% extends '_base.html' %}
 
-{% block title %}About page{% endblock %}
+{% block title %}Edit Profile{% endblock %}
 
 {% block content %}
-<h1>About page</h1>
+<h1>User Profile and Company Information</h1>
+<form method="post">
+    {% csrf_token %}
+    <fieldset>
+        <legend>Profile Information:</legend>
+        {{ profile_form.as_p }}
+    </fieldset>
+    <fieldset>
+        <legend>Company Information:</legend>
+        {{ company_form.as_p }}
+    </fieldset>
+    <button type="submit">Save All Changes</button>
+</form>
+
 {% endblock content %}

@@ -68,6 +68,7 @@ MIDDLEWARE = [
 CSRF_TRUSTED_ORIGINS = [
     'https://*.ngrok.io'
     'https://*.ngrok-free.app'
+    'http://*.ngrok-free.app'
 ]
 
 # https://docs.djangoproject.com/en/dev/ref/settings/#root-urlconf
