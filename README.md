@@ -3,6 +3,16 @@
 
 https://github.com/wsvincent/djangox/assets/766418/a73ea730-a7b4-4e53-bf51-aa68f6816d6a
 
+## Starting up with ngrok
+docker run --net=host -it -e NGROK_AUTHTOKEN=2bsabaYSp28A1B1Q5cwASLC5W0H_5RDUBPMRnKgCMMSrmNrWZ ngrok/ngrok:latest http --domain=officially-fast-condor.ngrok-free.app 8000^C
+
+# Running docker container commands
+sudo docker-compose exec web ..... 
+
+Oftentimes this will look like: 
+sudo docker-compose exec web python manage.py check 
+... or other django related commands
+
 
 ## 🚀 Features
 

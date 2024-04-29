@@ -1,0 +1,49 @@
+{
+    "metrics": [
+        {
+            "name": "Total Expenses",
+            "value": "---",
+            "growth_rate": "---"
+        },
+        {
+            "name": "Total COGS",
+            "value": "---",
+            "growth_rate": "---"
+        },
+        {
+            "name": "Total G&A",
+            "value": "---",
+            "growth_rate": "---"
+        },
+        {
+            "name": "Total S&M",
+            "value": "---",
+            "growth_rate": "---"
+        },
+        {
+            "name": "Total R&D",
+            "value": "---",
+            "growth_rate": "---"
+        },
+        {
+            "name": "Total Payroll",
+            "value": "---",
+            "growth_rate": "---"
+        },
+        {
+            "name": "Non-operating Expenses",
+            "value": "---",
+            "growth_rate": "---"
+        },
+        {
+            "name": "Payroll per Employee",
+            "value": "---",
+            "growth_rate": "---"
+        },
+        {
+            "name": "Expenses per Employee",
+            "value": "---",
+            "growth_rate": "---"
+        }
+    ]
+}

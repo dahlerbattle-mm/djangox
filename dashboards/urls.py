@@ -5,12 +5,12 @@ from . import views
 from django.views.generic import TemplateView
 
 urlpatterns = [
-    path('dashboard/summary/', TemplateView.as_view(template_name='dashboards/summary.html'), name='summary'),
-    path('dashboard/revenue/', TemplateView.as_view(template_name='dashboards/revenue.html'), name='revenue'),
-    path('dashboard/expenses/', TemplateView.as_view(template_name='dashboards/expenses.html'), name='expenses'),
-    path('dashboard/financials/', TemplateView.as_view(template_name='dashboards/financials.html'), name='financials'),
-    path('dashboard/saas_metrics/', TemplateView.as_view(template_name='dashboards/saas_metrics.html'), name='saas_metrics'),
-    path('dashboard/pipeline/', TemplateView.as_view(template_name='dashboards/pipeline.html'), name='pipeline'),
-    path('dashboard/product/', TemplateView.as_view(template_name='dashboards/product.html'), name='product'),
-    path('dashboard/services/', TemplateView.as_view(template_name='dashboards/services.html'), name='services'),
+    path('dashboard/summary/', views.summary_view, name="summary"),
+    path('dashboard/revenue/', views.revenue_view, name="revenue"),
+    path('dashboard/expenses/', views.expenses_view, name="expenses"),
+    path('dashboard/financials/', views.financials_view, name="financials"),
+    path('dashboard/saas_metrics/', views.saas_view, name="saas_metrics"),
+    path('dashboard/pipeline/', views.pipeline_view, name="pipeline"),
+    path('dashboard/product/', views.product_view, name="product"),
+    path('dashboard/services/', views.services_view, name="services"),
 ]

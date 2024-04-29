@@ -2,6 +2,7 @@ from django.db import models
 from django.conf import settings
 from accounts.models import CustomUser
 from django.contrib.postgres.fields import ArrayField
+import random
 
 SIZE_CHOICES = (
         ('SME', '1-9'),
@@ -73,8 +74,8 @@ class mmCompanies(models.Model):
     # Relationship to User model
     mmc_id = models.CharField(max_length=255)
     name = models.CharField(max_length=255)
-    url = models.URLField(max_length=200, blank=True, null=True)
-    users = models.ManyToManyField(CustomUser, related_name='companies')
+    url = models.CharField(max_length=200, blank=True, null=True)
+    users = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, blank=True)
     city = models.CharField(max_length=100)
     state = models.CharField(max_length=100)
     country = models.CharField(max_length=100)
@@ -91,11 +92,18 @@ class mmCompanies(models.Model):
     def save(self, *args, **kwargs):
         if not self.mmc_id:  # Generate profile_id only if it's not already set
             self.mmc_id = self._generate_unique_mmc_id()
-        super().save(*args, **kwargs)
+            
+        if self.users_id and not self.url:  # Check if there's a related user and no URL set yet
+            user_model = models.get_model(*settings.AUTH_USER_MODEL.split('.'))
+            user_instance = user_model.objects.get(id=self.users_id)
+            email_domain = user_instance.email.split('@')[1]
+            self.url = f'http://{email_domain}'  # Set the URL based on the user's email
+
+        super(mmCompanies, self).save(*args, **kwargs)
     
     def _generate_unique_mmc_id(self):
         while True:
-            potential_id = "mmc_" + str(random.randint(100000, 999999))  # Generate a random number between 100000 and 999999
+            potential_id = "mmc_id" + str(random.randint(100000, 999999))  # Generate a random number between 100000 and 999999
             if not mmCompanies.objects.filter(mmc_id=potential_id).exists():
                 return potential_id
 
@@ -114,12 +122,39 @@ class GlobalCompanies(models.Model):
     city = models.CharField(max_length=100, blank=True, null=True)
     state = models.CharField(max_length=100, blank=True, null=True)
     country = models.CharField(max_length=100, blank=True, null=True)
-    size = models.CharField(max_length=100, choices=SIZE_CHOICES)
-    sector = models.CharField(max_length=100, choices=SECTOR_CHOICES)
-    p_and_l_category = ArrayField(models.CharField(max_length=100, choices=P_AND_L_CATEGORY_CHOICES), default=list)
-    p_and_l_subcategory = ArrayField(models.CharField(max_length=100, choices=P_AND_L_SUBCATEGORY_CHOICES), default=list)
+    size = models.CharField(max_length=100, blank=True, null=True) #choices=SIZE_CHOICES
+    sector = models.CharField(max_length=100, blank=True, null=True)  #choices=SIZE_CHOICES
+    p_and_l_category = ArrayField(models.CharField(max_length=100, choices=P_AND_L_CATEGORY_CHOICES), default=list, blank=True)
+    p_and_l_subcategory = ArrayField(models.CharField(max_length=100, choices=P_AND_L_SUBCATEGORY_CHOICES), default=list, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+def generate_random_gc_id():
+    return "gc_id_" + str(random.randint(100000, 999999))
+
+def add_global_company(name, url=None, mm_companies=None, image=None, city=None, state=None, country=None, company_size=None, sector=None, mm_company_list=None):
+    """Create and save a new GlobalCompany instance with various optional fields."""
+    new_company = GlobalCompanies(
+        gc_id=generate_random_gc_id(),
+        name=name,
+        url=url if url else "Unknown",
+        mm_Companies=mm_companies,
+        image=image,
+        city=city if city else "Unknown",
+        state=state if state else "Unknown",
+        country=country if country else "Unknown",
+        size=size if size else "Unknown",
+        sector=sector if sector else "Unknown", 
+        p_and_l_category=p_and_l_category if p_and_l_category else "Unknown", 
+        p_and_l_subcategory=p_and_l_subcategory if p_and_l_subcategory else "Unknown", 
+    )
+    new_company.save()
+
+    if mm_company_list:
+        for mm_company in mm_company_list:
+            new_company.mm_companies.add(mm_company)  # Add the mmCompanies instances to the GlobalCompanies instance
+
+    return new_company
 
     def __str__(self):
         return self.name

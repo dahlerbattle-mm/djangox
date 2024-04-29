@@ -1,0 +1,54 @@
+{% extends '_base.html' %}
+
+{% block title %}
+Integrations
+{% endblock %}
+
+{% block head %}
+<style>
+    .card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-height: 300px;
+    }
+
+    .logo-container {
+    flex: 1 0 auto; /* Grow to use available space, don't shrink, don't base size on content */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    }
+
+    .card-body {
+    flex-shrink: 0; /* Don't shrink the card-body */
+    }
+
+</style>
+{% endblock head %}
+
+{% block content %}
+<h1>Integrations</h1>
+<!-- {% load static %} -->
+
+<div class="container mt-4">
+  <div class="row">
+    {% for service in services %}
+    <div class="col-lg-3 col-md-4 col-sm-6 mb-4 d-flex align-items-stretch">
+        <div class="card w-100">
+            <!-- Using Bootstrap's img-fluid to make image responsive and a set height for consistency -->
+            <div class="logo-container p-2 d-flex justify-content-center align-items-center">
+            <img src="{% static service.logo_url %}" class="img-fluid" alt="{{ service.name }}" style="max-height: 100px;">
+            </div>
+            <div class="card-body d-flex flex-column">
+            <!-- <h5 class="card-title">{{ service.name }}</h5> -->
+            <a href="{% url 'quickbooks_connect' %}" class="btn btn-primary mt-auto">Connect</a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+
+{% endblock content %}

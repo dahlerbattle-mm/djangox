@@ -1,5 +1,13 @@
 from pathlib import Path
 import socket
+# from dotenv import load_dotenv
+import environ
+
+env = environ.Env()
+environ.Env.read_env()
+
+# # Load the .env file
+# load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -32,6 +40,7 @@ INSTALLED_APPS = [
     "whitenoise.runserver_nostatic",
     "django.contrib.staticfiles",
     "django.contrib.sites",
+    'django.contrib.humanize',
     # Third-party
     "allauth",
     "allauth.account",
@@ -66,9 +75,7 @@ MIDDLEWARE = [
 ]
 
 CSRF_TRUSTED_ORIGINS = [
-    'https://*.ngrok.io'
-    'https://*.ngrok-free.app'
-    'http://*.ngrok-free.app'
+    "https://officially-fast-condor.ngrok-free.app/*"
 ]
 
 # https://docs.djangoproject.com/en/dev/ref/settings/#root-urlconf
@@ -217,3 +224,157 @@ ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_AUTHENTICATION_METHOD = "email"
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_UNIQUE_EMAIL = True
+
+#quickbooks information
+QUICKBOOKS_CLIENT_ID = env('QUICKBOOKS_CLIENT_ID')
+QUICKBOOKS_CLIENT_SECRET = env('QUICKBOOKS_CLIENT_SECRET')
+REDIRECT_URI = "https://officially-fast-condor.ngrok-free.app/integrations/callback/quickbooks/"
+
+# NGROK_AUTHTOKEN= env('NGROK_AUTHTOKEN')
+
+INTEGRATION_SERVICES = [
+        {'name': 'QuickBooks', 'logo_url': 'images/integrations_logos/quickbooks_logo.png', 'oauth_base_url': 'https://appcenter.intuit.com/connect/oauth2', "response_type": "code"},
+        {'name': 'HubSpot', 'logo_url': 'images/integrations_logos/hubspot_logo.svg.png', 'oauth_base_url': 'https://app.hubspot.com/oauth/authorize', "response_type": "code"},
+        {'name': 'Stripe', 'logo_url': 'images/integrations_logos/stripe_logo.svg.png', 'oauth_base_url': 'https://connect.stripe.com/oauth/authorize', "response_type": "code"},
+        {'name': 'Jira', 'logo_url': 'images/integrations_logos/jira_logo.svg.png', 'oauth_base_url': 'https://auth.atlassian.com/authorize', "response_type": "code"},
+        {'name': 'Salesforce', 'logo_url': 'images/integrations_logos/salesforce_logo.svg.png', 'oauth_base_url': 'https://hostname/services/oauth2/authorize', "response_type": "code"},
+        {'name': 'Xero', 'logo_url': 'images/integrations_logos/xero_logo.com.png', 'oauth_base_url': 'https://login.xero.com/identity/connect/authorize', "response_type": "code"},
+        {'name': 'Mailchimp', 'logo_url': 'images/integrations_logos/mailchimp_logo.png', 'oauth_base_url': 'https://login.mailchimp.com/oauth2/authorize', "response_type": "code"},
+        {'name': 'Zoho', 'logo_url': 'images/integrations_logos/zoho_logo.png', 'oauth_base_url': 'https://accounts.zoho.com/oauth/v2/auth', "response_type": "code"},
+        {'name': 'ActiveCampaign', 'logo_url': 'images/integrations_logos/active_campaign_logo.svg.png', 'oauth_base_url': 'https://api.example.com/oauth2/authorize', "response_type": "code"},
+        {'name': 'Freshbooks', 'logo_url': 'images/integrations_logos/freshbooks_logo.png', 'oauth_base_url': 'https://api.freshbooks.com/auth/oauth/token', "response_type": "code"},
+        {'name': 'Sage', 'logo_url': 'images/integrations_logos/sage_logo.svg.png', 'oauth_base_url': 'https://www.sageone.com/oauth2/auth/central?filter=apiv3.1', "response_type": "code"},
+        {'name': 'Monday.com', 'logo_url': 'images/integrations_logos/monday.com_logo.svg.png', 'oauth_base_url': 'https://auth.monday.com/oauth2/authorize', "response_type": "code"},
+    ]
+
+EXPENSES_CATEGORIES = [
+        {'name': 'Total Expenses', 'value': 0, 'growth_rate': 0},
+        {'name': 'COGS', 'value': 0, 'growth_rate': 0},
+        {'name': 'G&A', 'value': 0, 'growth_rate': 0},
+        {'name': 'S&M', 'value': 0, 'growth_rate': 0},
+        {'name': 'R&D', 'value': 0, 'growth_rate': 0},
+        {'name': 'Payroll', 'value': 0, 'growth_rate': 0},
+        {'name': 'Non-Operating Expenses', 'value': 0, 'growth_rate': 0},
+        {'name': 'Payroll per FTE', 'value': 0, 'growth_rate': 0},
+        {'name': 'Expenses per FTE', 'value': 0, 'growth_rate': 0},
+    ]   
+
+REVENUE_CATEGORIES = [
+        {'name': 'Total Revenue', 'value': 0, 'growth_rate': 0},
+        {'name': 'ARPA', 'value': 0, 'growth_rate': 0},
+        {'name': 'Customer Concentration Score', 'value': 0, 'growth_rate': 0},
+        {'name': 'New Customer Revenue', 'value': 0, 'growth_rate': 0},
+        {'name': 'Existing Customer Revenue', 'value': 0, 'growth_rate': 0},
+        {'name': 'Revenue per Employee', 'value': 0, 'growth_rate': 0},
+        {'name': 'Revenue from Lower Figure Product/Service', 'value': 0, 'growth_rate': 0},
+        {'name': 'Revenue from Middle Figure Product/Service', 'value': 0, 'growth_rate': 0},
+        {'name': 'Revenue from Upper Figure Product/Service', 'value': 0, 'growth_rate': 0},
+    ]
+
+FINANCIAL_CATEGORIES = [
+        {'name': 'Gross Profit', 'value': 0, 'growth_rate': 0},
+        {'name': 'Gross Profit Margin', 'value': 0, 'growth_rate': 0},
+        {'name': 'Net Profit', 'value': 0, 'growth_rate': 0},
+        {'name': 'Net Profit Margin', 'value': 0, 'growth_rate': 0},
+        {'name': 'EBITDA', 'value': 0, 'growth_rate': 0},
+        {'name': 'Gross Burn', 'value': 0, 'growth_rate': 0},
+        {'name': 'Net Burn', 'value': 0, 'growth_rate': 0},
+        {'name': 'Accounts Receivable Days', 'value': 0, 'growth_rate': 0},
+        {'name': 'Accounts Payable Days', 'value': 0, 'growth_rate': 0},
+        {'name': 'Debt to Equity', 'value': 0, 'growth_rate': 0},
+        {'name': 'Quick Ratio', 'value': 0, 'growth_rate': 0},
+    ]
+
+PIPELINE_CATEGORIES = [
+        {'name': 'Conversion Rate', 'value': 0, 'growth_rate': 0},
+        {'name': 'Sales Velocity', 'value': 0, 'growth_rate': 0},
+        {'name': 'Average Deal Size', 'value': 0, 'growth_rate': 0},
+        {'name': 'Weighted Pipeline', 'value': 0, 'growth_rate': 0},
+        {'name': 'Prospects', 'value': 0, 'growth_rate': 0},
+        {'name': 'Marketing Qualified Leads', 'value': 0, 'growth_rate': 0},
+        {'name': 'Sales Qualified Leads', 'value': 0, 'growth_rate': 0},
+        {'name': 'Closed-Won', 'value': 0, 'growth_rate': 0},
+        {'name': 'Closed-Lost', 'value': 0, 'growth_rate': 0},
+    ]
+
+PRODUCT_CATEGORIES = [
+        {'name': 'NPS/CSAT', 'value': 0, 'growth_rate': 0},
+        {'name': 'Monthly Active Users', 'value': 0, 'growth_rate': 0},
+        {'name': 'Site Visits', 'value': 0, 'growth_rate': 0},
+        {'name': 'Velocity', 'value': 0, 'growth_rate': 0},
+        {'name': 'Burndown Progress', 'value': 0, 'growth_rate': 0},
+        {'name': 'R&D Expenses', 'value': 0, 'growth_rate': 0},
+        {'name': 'Largest R&D Vendor', 'value': 0, 'growth_rate': 0},
+        {'name': 'Lead Time', 'value': 0, 'growth_rate': 0},
+        {'name': 'Cycle Time', 'value': 0, 'growth_rate': 0},
+    ]
+
+SAAS_METRICS_CATEGORIES = [
+        {'name': 'MRR', 'value': 0, 'growth_rate': 0},
+        {'name': 'Net Revenue Retention', 'value': 0, 'growth_rate': 0},
+        {'name': 'Gross Revenue Retention', 'value': 0, 'growth_rate': 0},
+        {'name': 'Customer Churn Rate', 'value': 0, 'growth_rate': 0},
+        {'name': 'Revenue Churn Rate', 'value': 0, 'growth_rate': 0},
+        {'name': 'Customer Aquisition Costs', 'value': 0, 'growth_rate': 0},
+        {'name': 'Customer Lifetime Value', 'value': 0, 'growth_rate': 0},
+        {'name': 'LTV/CAC Ratio', 'value': 0, 'growth_rate': 0},
+        {'name': 'CAC Payback (Mos.)', 'value': 0, 'growth_rate': 0},
+        {'name': 'Rule of 40', 'value': 0, 'growth_rate': 0},
+        {'name': 'Gross Runway (Mos.)', 'value': 0, 'growth_rate': 0},
+        {'name': 'Net Runway (Mos.)', 'value': 0, 'growth_rate': 0},
+    ]
+
+SERVICES_CATEGORIES = [
+        {'name': 'NPS/CSAT', 'value': 0, 'growth_rate': 0},
+        {'name': 'Completed Contracts', 'value': 0, 'growth_rate': 0},
+        {'name': 'Contracts in Progress', 'value': 0, 'growth_rate': 0},
+        {'name': 'Employee Utilization Rate', 'value': 0, 'growth_rate': 0},
+        {'name': 'Billable Hours', 'value': 0, 'growth_rate': 0},
+        {'name': 'Unbillable Hours', 'value': 0, 'growth_rate': 0},
+    ]
+
+SUMMARY_CATEGORIES = [
+        {'name': 'Revenue', 'value': 0, 'growth_rate': 0},
+        {'name': 'Revenue Best Performer', 'value': 0, 'growth_rate': 0},
+        {'name': 'Revenue Worst Performer', 'value': 0, 'growth_rate': 0},
+
+        {'name': 'Expenses', 'value': 0, 'growth_rate': 0},
+        {'name': 'Expenses Best Performer', 'value': 0, 'growth_rate': 0},
+        {'name': 'Expenses Worst Performer', 'value': 0, 'growth_rate': 0},
+
+        {'name': 'Net Income', 'value': 0, 'growth_rate': 0},
+        {'name': 'Financials Best Performer', 'value': 0, 'growth_rate': 0},
+        {'name': 'Financials Worst Performer', 'value': 0, 'growth_rate': 0},
+
+        {'name': 'Closed-Won', 'value': 0, 'growth_rate': 0},
+        {'name': 'Pipeline Best Performer', 'value': 0, 'growth_rate': 0},
+        {'name': 'Pipeline Worst Performer', 'value': 0, 'growth_rate': 0},
+
+        {'name': 'Net Revenue Retention', 'value': 0, 'growth_rate': 0},
+        {'name': 'SaaS Metrics Best Performer', 'value': 0, 'growth_rate': 0},
+        {'name': 'SaaS Metrics Worst Performer', 'value': 0, 'growth_rate': 0},
+
+        {'name': 'NPS/CSAT', 'value': 0, 'growth_rate': 0},
+        {'name': 'Product Development Best Performer', 'value': 0, 'growth_rate': 0},
+        {'name': 'Product Worst Performer', 'value': 0, 'growth_rate': 0},
+
+        {'name': 'NPS/CSAT', 'value': 0, 'growth_rate': 0},
+        {'name': 'Services Best Performer', 'value': 0, 'growth_rate': 0},
+        {'name': 'Services Worst Performer', 'value': 0, 'growth_rate': 0},
+
+        {'name': 'Employee Satisfaction', 'value': 0, 'growth_rate': 0},
+        {'name': 'HR Best Performer', 'value': 0, 'growth_rate': 0},
+        {'name': 'HR Worst Performer', 'value': 0, 'growth_rate': 0},
+]
+
+HR_CATEGORIES = [
+        {'name': 'Employee Turnover', 'value': 0, 'growth_rate': 0},
+        {'name': 'Open Jobs', 'value': 0, 'growth_rate': 0},
+        {'name': 'Fill Time', 'value': 0, 'growth_rate': 0},
+        {'name': 'Revenue per FTE', 'value': 0, 'growth_rate': 0},
+        {'name': 'Expense per FTE', 'value': 0, 'growth_rate': 0},
+        {'name': 'Employee Satisfaction', 'value': 0, 'growth_rate': 0},
+        {'name': 'Training Expenses', 'value': 0, 'growth_rate': 0},
+        {'name': 'Payroll as % of Revneu', 'value': 0, 'growth_rate': 0},
+        {'name': 'Job Acceptance Rate', 'value': 0, 'growth_rate': 0},
+    ]

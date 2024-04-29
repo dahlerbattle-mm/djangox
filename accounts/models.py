@@ -11,7 +11,7 @@ class CustomUser(AbstractUser):
 
 # Profile Model
 class Profile(models.Model):
-    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     profile_id = models.CharField(max_length=100, unique=True, blank=True)
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
@@ -28,7 +28,7 @@ class Profile(models.Model):
     
     def _generate_unique_profile_id(self):
         while True:
-            potential_id = "pid_" + str(random.randint(100000, 999999))  # Generate a random number between 100000 and 999999
+            potential_id = "p_id" + str(random.randint(100000, 999999))  # Generate a random number between 100000 and 999999
             if not Profile.objects.filter(profile_id=potential_id).exists():
                 return potential_id
 

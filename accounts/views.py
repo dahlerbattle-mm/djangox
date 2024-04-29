@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from .models import Profile
+from .models import Profile, CustomUser
 from .forms import ProfileForm
 from entities.forms import CompanyForm
 from entities.models import mmCompanies
@@ -28,7 +28,7 @@ def profile_view(request):
                 saved_company = company_form.save(commit=False)
                 if not company_query.exists():
                     saved_company.save()
-                    saved_company.users.add(request.user)  # Add user to the new company
+                    # saved_company.users.add(request.CustomUser)  # Add user to the new company
 
                 return redirect('home')  # Redirect to the 'home' page on success
 
