@@ -9,6 +9,9 @@ urlpatterns = [
     path("", include("pages.urls")),
     path("dashboards/", include("dashboards.urls")),
     path("integrations/", include("integrations.urls")),
+    path("models/", include("models.urls")),
+    path("chat/", include("chat.urls")),
+    path("subscriptions/", include("subscription.urls")),
 ]
 
 if settings.DEBUG:

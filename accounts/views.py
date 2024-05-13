@@ -10,7 +10,7 @@ from django.contrib.auth.models import User
 
 @login_required
 def profile_view(request):
-    # Get or create the profile linked to the current user
+    """Get or create the profile linked to the current user."""
     profile, created = Profile.objects.get_or_create(user=request.user)
 
     # Check if the current user is already linked to a company

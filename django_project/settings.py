@@ -19,7 +19,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # https://docs.djangoproject.com/en/dev/ref/settings/#secret-key
 # SECURITY WARNING: keep the secret key used in production secret!
 # SECRET_KEY = "django-insecure-0peo@#x9jur3!h$ryje!$879xww8y1y66jx!%*#ymhg&jkozs2"
-SECRET_KEY = "+hhs@c6=nexiz5#3!ez&lxj(gag*wos1q&%e9q7^t)h%gp(u)r"
+SECRET_KEY = env("SECRET_KEY")
 
 # https://docs.djangoproject.com/en/dev/ref/settings/#debug
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -100,14 +100,6 @@ TEMPLATES = [
         },
     },
 ]
-
-# # https://docs.djangoproject.com/en/dev/ref/settings/#databases
-# DATABASES = {
-#     "default": {
-#         "ENGINE": "django.db.backends.sqlite3",
-#         "NAME": BASE_DIR / "db.sqlite3",
-#     }
-# }
 
 # For Docker/PostgreSQL usage uncomment this and comment the DATABASES config above
 DATABASES = {
@@ -225,28 +217,64 @@ ACCOUNT_AUTHENTICATION_METHOD = "email"
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_UNIQUE_EMAIL = True
 
+### This includes all details needed to receive OAuth authorization from customers ###
+### TODO: Should this be included here or should I just link directly to the env folder when used? ###
+
 #quickbooks information
+QUICKBOOKS_REALM_ID = env('QUICKBOOKS_REALM_ID')
 QUICKBOOKS_CLIENT_ID = env('QUICKBOOKS_CLIENT_ID')
 QUICKBOOKS_CLIENT_SECRET = env('QUICKBOOKS_CLIENT_SECRET')
-REDIRECT_URI = "https://officially-fast-condor.ngrok-free.app/integrations/callback/quickbooks/"
+QUICKBOOKS_REDIRECT_URI = "https://officially-fast-condor.ngrok-free.app/integrations/callback/quickbooks/"
 
-# NGROK_AUTHTOKEN= env('NGROK_AUTHTOKEN')
+#hubspot information
+HUBSPOT_APP_ID = env('HUBSPOT_APP_ID')
+HUBSPOT_CLIENT_ID = env('HUBSPOT_CLIENT_ID')
+HUBSPOT_CLIENT_SECRET = env('HUBSPOT_CLIENT_SECRET')
+HUBSPOT_REDIRECT_URI = "https://officially-fast-condor.ngrok-free.app/integrations/callback/hubspot/"
 
+#stripe information
+STRIPE_APP_ID = env('STRIPE_APP_ID')
+STRIPE_CLIENT_ID = env('STRIPE_CLIENT_ID')
+STRIPE_CLIENT_SECRET = env('STRIPE_CLIENT_SECRET')
+STRIPE_REDIRECT_URI = "https://officially-fast-condor.ngrok-free.app/integrations/callback/stripe/"
+
+#jira information
+JIRA_APP_ID = env('JIRA_APP_ID')
+JIRA_CLIENT_ID = env('JIRA_CLIENT_ID')
+JIRA_CLIENT_SECRET = env('JIRA_CLIENT_SECRET')
+JIRA_REDIRECT_URI = "https://officially-fast-condor.ngrok-free.app/integrations/callback/jira/"
+
+#datadog information
+DATADOG_APP_ID = env('DATADOG_APP_ID')
+DATADOG_CLIENT_ID = env('DATADOG_CLIENT_ID')
+DATADOG_CLIENT_SECRET = env('DATADOG_CLIENT_SECRET')
+DATADOG_REDIRECT_URI = "https://officially-fast-condor.ngrok-free.app/integrations/callback/datadog/"
+
+
+### This provides all integrations in the integrations app ###
+### TODO: Should this be here or in a file in the integrations app? ###
 INTEGRATION_SERVICES = [
-        {'name': 'QuickBooks', 'logo_url': 'images/integrations_logos/quickbooks_logo.png', 'oauth_base_url': 'https://appcenter.intuit.com/connect/oauth2', "response_type": "code"},
-        {'name': 'HubSpot', 'logo_url': 'images/integrations_logos/hubspot_logo.svg.png', 'oauth_base_url': 'https://app.hubspot.com/oauth/authorize', "response_type": "code"},
-        {'name': 'Stripe', 'logo_url': 'images/integrations_logos/stripe_logo.svg.png', 'oauth_base_url': 'https://connect.stripe.com/oauth/authorize', "response_type": "code"},
-        {'name': 'Jira', 'logo_url': 'images/integrations_logos/jira_logo.svg.png', 'oauth_base_url': 'https://auth.atlassian.com/authorize', "response_type": "code"},
-        {'name': 'Salesforce', 'logo_url': 'images/integrations_logos/salesforce_logo.svg.png', 'oauth_base_url': 'https://hostname/services/oauth2/authorize', "response_type": "code"},
-        {'name': 'Xero', 'logo_url': 'images/integrations_logos/xero_logo.com.png', 'oauth_base_url': 'https://login.xero.com/identity/connect/authorize', "response_type": "code"},
-        {'name': 'Mailchimp', 'logo_url': 'images/integrations_logos/mailchimp_logo.png', 'oauth_base_url': 'https://login.mailchimp.com/oauth2/authorize', "response_type": "code"},
-        {'name': 'Zoho', 'logo_url': 'images/integrations_logos/zoho_logo.png', 'oauth_base_url': 'https://accounts.zoho.com/oauth/v2/auth', "response_type": "code"},
-        {'name': 'ActiveCampaign', 'logo_url': 'images/integrations_logos/active_campaign_logo.svg.png', 'oauth_base_url': 'https://api.example.com/oauth2/authorize', "response_type": "code"},
-        {'name': 'Freshbooks', 'logo_url': 'images/integrations_logos/freshbooks_logo.png', 'oauth_base_url': 'https://api.freshbooks.com/auth/oauth/token', "response_type": "code"},
-        {'name': 'Sage', 'logo_url': 'images/integrations_logos/sage_logo.svg.png', 'oauth_base_url': 'https://www.sageone.com/oauth2/auth/central?filter=apiv3.1', "response_type": "code"},
-        {'name': 'Monday.com', 'logo_url': 'images/integrations_logos/monday.com_logo.svg.png', 'oauth_base_url': 'https://auth.monday.com/oauth2/authorize', "response_type": "code"},
+        {'name': 'QuickBooks', 'connect_url': 'quickbooks_connect', 'logo_url': 'images/integrations_logos/quickbooks_logo.png', 'oauth_base_url': 'https://appcenter.intuit.com/connect/oauth2', "response_type": "code"},
+        {'name': 'HubSpot', 'connect_url': 'hubspot_connect', 'logo_url': 'images/integrations_logos/hubspot_logo.svg.png', 'oauth_base_url': 'https://app.hubspot.com/oauth/authorize', "response_type": "code"},
+        {'name': 'Stripe', 'connect_url': 'stripe_connect', 'logo_url': 'images/integrations_logos/stripe_logo.svg.png', 'oauth_base_url': 'https://connect.stripe.com/oauth/authorize', "response_type": "code"},
+        {'name': 'Jira', 'connect_url': 'jira_connect', 'logo_url': 'images/integrations_logos/jira_logo.svg.png', 'oauth_base_url': 'https://auth.atlassian.com/authorize', "response_type": "code"},
+        {'name': 'Datadog', 'connect_url': 'datadog_connect', 'logo_url': 'images/integrations_logos/datadog_logo.png', 'oauth_base_url': 'https://app.datadoghq.com/oauth2/v1/authorize', "response_type": "code"},
+        {'name': 'Salesforce', 'connect_url': 'integrations', 'logo_url': 'images/integrations_logos/salesforce_logo.svg.png', 'oauth_base_url': 'https://hostname/services/oauth2/authorize', "response_type": "code"},
+        {'name': 'Xero', 'connect_url': 'integrations', 'logo_url': 'images/integrations_logos/xero_logo.com.png', 'oauth_base_url': 'https://login.xero.com/identity/connect/authorize', "response_type": "code"},
+        {'name': 'Mailchimp', 'connect_url': 'integrations', 'logo_url': 'images/integrations_logos/mailchimp_logo.png', 'oauth_base_url': 'https://login.mailchimp.com/oauth2/authorize', "response_type": "code"},
+        {'name': 'Zoho', 'connect_url': 'integrations', 'logo_url': 'images/integrations_logos/zoho_logo.png', 'oauth_base_url': 'https://accounts.zoho.com/oauth/v2/auth', "response_type": "code"},
+        {'name': 'ActiveCampaign', 'connect_url': 'integrations', 'logo_url': 'images/integrations_logos/active_campaign_logo.svg.png', 'oauth_base_url': 'https://api.example.com/oauth2/authorize', "response_type": "code"},
+        {'name': 'Freshbooks', 'connect_url': 'integrations', 'logo_url': 'images/integrations_logos/freshbooks_logo.png', 'oauth_base_url': 'https://api.freshbooks.com/auth/oauth/token', "response_type": "code"},
+        {'name': 'Sage', 'connect_url': 'integrations', 'logo_url': 'images/integrations_logos/sage_logo.svg.png', 'oauth_base_url': 'https://www.sageone.com/oauth2/auth/central?filter=apiv3.1', "response_type": "code"},
+        {'name': 'Monday.com', 'connect_url': 'mondaydotcom_connect', 'logo_url': 'images/integrations_logos/monday.com_logo.svg.png', 'oauth_base_url': 'https://auth.monday.com/oauth2/authorize', "response_type": "code"},
+        {'name': 'Pendo', 'connect_url': 'integrations', 'logo_url': 'images/integrations_logos/pendo_logo.png', 'oauth_base_url': 'https://app.pendo.io/api/v1/page', "response_type": "code"},
+        {'name': 'BambooHR', 'connect_url': 'integrations', 'logo_url': 'images/integrations_logos/bamboohr_logo.png', 'oauth_base_url': 'https://api.bamboohr.com/api/gateway.php', "response_type": "code"},
+        {'name': 'Gusto', 'connect_url': 'integrations', 'logo_url': 'images/integrations_logos/gusto_logo.png', 'oauth_base_url': 'https://api.bamboohr.com/api/gateway.php', "response_type": "code"},
     ]
 
+### This provides all of the information needed for the dashboard pages. ###
+### NOTE: Will likely change. ####
+### TODO: Should this be included in settings.py or in a seperate file structure in the dashboard app? ###
 EXPENSES_CATEGORIES = [
         {'name': 'Total Expenses', 'value': 0, 'growth_rate': 0},
         {'name': 'COGS', 'value': 0, 'growth_rate': 0},
@@ -262,7 +290,7 @@ EXPENSES_CATEGORIES = [
 REVENUE_CATEGORIES = [
         {'name': 'Total Revenue', 'value': 0, 'growth_rate': 0},
         {'name': 'ARPA', 'value': 0, 'growth_rate': 0},
-        {'name': 'Customer Concentration Score', 'value': 0, 'growth_rate': 0},
+        {'name': 'Customer Concentration', 'value': 0, 'growth_rate': 0},
         {'name': 'New Customer Revenue', 'value': 0, 'growth_rate': 0},
         {'name': 'Existing Customer Revenue', 'value': 0, 'growth_rate': 0},
         {'name': 'Revenue per Employee', 'value': 0, 'growth_rate': 0},
@@ -277,12 +305,10 @@ FINANCIAL_CATEGORIES = [
         {'name': 'Net Profit', 'value': 0, 'growth_rate': 0},
         {'name': 'Net Profit Margin', 'value': 0, 'growth_rate': 0},
         {'name': 'EBITDA', 'value': 0, 'growth_rate': 0},
-        {'name': 'Gross Burn', 'value': 0, 'growth_rate': 0},
-        {'name': 'Net Burn', 'value': 0, 'growth_rate': 0},
-        {'name': 'Accounts Receivable Days', 'value': 0, 'growth_rate': 0},
-        {'name': 'Accounts Payable Days', 'value': 0, 'growth_rate': 0},
+        {'name': 'EBITDA Margin', 'value': 0, 'growth_rate': 0},
+        {'name': 'Rule of 40', 'value': 0, 'growth_rate': 0},
+        {'name': 'Net Working Capital', 'value': 0, 'growth_rate': 0},
         {'name': 'Debt to Equity', 'value': 0, 'growth_rate': 0},
-        {'name': 'Quick Ratio', 'value': 0, 'growth_rate': 0},
     ]
 
 PIPELINE_CATEGORIES = [
@@ -304,33 +330,39 @@ PRODUCT_CATEGORIES = [
         {'name': 'Velocity', 'value': 0, 'growth_rate': 0},
         {'name': 'Burndown Progress', 'value': 0, 'growth_rate': 0},
         {'name': 'R&D Expenses', 'value': 0, 'growth_rate': 0},
-        {'name': 'Largest R&D Vendor', 'value': 0, 'growth_rate': 0},
+        {'name': 'Work in Progress', 'value': 0, 'growth_rate': 0},
+        {'name': 'Backlog', 'value': 0, 'growth_rate': 0},
         {'name': 'Lead Time', 'value': 0, 'growth_rate': 0},
-        {'name': 'Cycle Time', 'value': 0, 'growth_rate': 0},
     ]
 
 SAAS_METRICS_CATEGORIES = [
         {'name': 'MRR', 'value': 0, 'growth_rate': 0},
-        {'name': 'Net Revenue Retention', 'value': 0, 'growth_rate': 0},
-        {'name': 'Gross Revenue Retention', 'value': 0, 'growth_rate': 0},
-        {'name': 'Customer Churn Rate', 'value': 0, 'growth_rate': 0},
+        {'name': 'LTV/CAC', 'value': 0, 'growth_rate': 0},
         {'name': 'Revenue Churn Rate', 'value': 0, 'growth_rate': 0},
-        {'name': 'Customer Aquisition Costs', 'value': 0, 'growth_rate': 0},
         {'name': 'Customer Lifetime Value', 'value': 0, 'growth_rate': 0},
-        {'name': 'LTV/CAC Ratio', 'value': 0, 'growth_rate': 0},
+        {'name': 'Customer Aquisition Costs', 'value': 0, 'growth_rate': 0},
         {'name': 'CAC Payback (Mos.)', 'value': 0, 'growth_rate': 0},
-        {'name': 'Rule of 40', 'value': 0, 'growth_rate': 0},
-        {'name': 'Gross Runway (Mos.)', 'value': 0, 'growth_rate': 0},
-        {'name': 'Net Runway (Mos.)', 'value': 0, 'growth_rate': 0},
     ]
 
 SERVICES_CATEGORIES = [
         {'name': 'NPS/CSAT', 'value': 0, 'growth_rate': 0},
         {'name': 'Completed Contracts', 'value': 0, 'growth_rate': 0},
         {'name': 'Contracts in Progress', 'value': 0, 'growth_rate': 0},
-        {'name': 'Employee Utilization Rate', 'value': 0, 'growth_rate': 0},
+        {'name': 'Backlog', 'value': 0, 'growth_rate': 0},
+        {'name': 'Employee Utilization', 'value': 0, 'growth_rate': 0},
         {'name': 'Billable Hours', 'value': 0, 'growth_rate': 0},
-        {'name': 'Unbillable Hours', 'value': 0, 'growth_rate': 0},
+    ]
+
+CASHFLOW_CATEGORIES = [
+        {'name': 'Net Runway (mos.)', 'value': 0, 'growth_rate': 0},
+        {'name': 'Gross Runway (mos.)', 'value': 0, 'growth_rate': 0},
+        {'name': 'Net Burn Rate', 'value': 0, 'growth_rate': 0},
+        {'name': 'Gross Burn Rate', 'value': 0, 'growth_rate': 0},
+        {'name': 'Cash Available', 'value': 0, 'growth_rate': 0},
+        {'name': 'Quick Ratio', 'value': 0, 'growth_rate': 0},
+        {'name': 'AR Days', 'value': 0, 'growth_rate': 0},
+        {'name': 'AP Days', 'value': 0, 'growth_rate': 0},
+        {'name': 'Inventory Days', 'value': 0, 'growth_rate': 0},
     ]
 
 SUMMARY_CATEGORIES = [
@@ -342,15 +374,19 @@ SUMMARY_CATEGORIES = [
         {'name': 'Expenses Best Performer', 'value': 0, 'growth_rate': 0},
         {'name': 'Expenses Worst Performer', 'value': 0, 'growth_rate': 0},
 
-        {'name': 'Net Income', 'value': 0, 'growth_rate': 0},
+        {'name': 'Gross Income Margin', 'value': 0, 'growth_rate': 0},
         {'name': 'Financials Best Performer', 'value': 0, 'growth_rate': 0},
         {'name': 'Financials Worst Performer', 'value': 0, 'growth_rate': 0},
 
-        {'name': 'Closed-Won', 'value': 0, 'growth_rate': 0},
+        {'name': 'Net Runway (mos.)', 'value': 0, 'growth_rate': 0},
+        {'name': 'Cashflow Best Performer', 'value': 0, 'growth_rate': 0},
+        {'name': 'Cashflow Worst Performer', 'value': 0, 'growth_rate': 0},
+
+        {'name': 'Conversion Rate', 'value': 0, 'growth_rate': 0},
         {'name': 'Pipeline Best Performer', 'value': 0, 'growth_rate': 0},
         {'name': 'Pipeline Worst Performer', 'value': 0, 'growth_rate': 0},
 
-        {'name': 'Net Revenue Retention', 'value': 0, 'growth_rate': 0},
+        {'name': 'Revenue Churn Rate', 'value': 0, 'growth_rate': 0},
         {'name': 'SaaS Metrics Best Performer', 'value': 0, 'growth_rate': 0},
         {'name': 'SaaS Metrics Worst Performer', 'value': 0, 'growth_rate': 0},
 
@@ -368,13 +404,13 @@ SUMMARY_CATEGORIES = [
 ]
 
 HR_CATEGORIES = [
+        {'name': 'Employee Satisfaction', 'value': 0, 'growth_rate': 0},
         {'name': 'Employee Turnover', 'value': 0, 'growth_rate': 0},
+        {'name': 'Payroll as % of Revenue', 'value': 0, 'growth_rate': 0},
+        {'name': 'Job Acceptance Rate', 'value': 0, 'growth_rate': 0},
         {'name': 'Open Jobs', 'value': 0, 'growth_rate': 0},
         {'name': 'Fill Time', 'value': 0, 'growth_rate': 0},
         {'name': 'Revenue per FTE', 'value': 0, 'growth_rate': 0},
         {'name': 'Expense per FTE', 'value': 0, 'growth_rate': 0},
-        {'name': 'Employee Satisfaction', 'value': 0, 'growth_rate': 0},
         {'name': 'Training Expenses', 'value': 0, 'growth_rate': 0},
-        {'name': 'Payroll as % of Revneu', 'value': 0, 'growth_rate': 0},
-        {'name': 'Job Acceptance Rate', 'value': 0, 'growth_rate': 0},
     ]

@@ -1,24 +1,27 @@
 from django.urls import path
 from . import views
+from . import pulls2
+from dashboards.views import qb_expenses_clean
 
 urlpatterns = [
     path("", views.index, name="integrations"),
-    path('connect/quickbooks/', views.quickbooks_auth, name='quickbooks_connect'),
-    path('callback/quickbooks/', views.quickbooks_callback, name='quickbooks_callback'),
-    path('connect/hubspot/', views.connect_to_qb, name='hubspot_connect'),
-    path('connect/stripe/', views.connect_to_qb, name='stripe_connect'),
-    path('connect/jira/', views.connect_to_qb, name='jira_connect'),
-    path('connect/salesforce/', views.connect_to_qb, name='salesforce_connect'),
-    path('connect/xero/', views.connect_to_qb, name='xero_connect'),
-    path('connect/mailchimp/', views.connect_to_qb, name='mailchimp_connect'),
-    path('connect/zoho/', views.connect_to_qb, name='zoho_connect'),
-    path('connect/activecampaign/', views.connect_to_qb, name='activecampaign_connect'),
-    path('connect/freshbooks/', views.connect_to_qb, name='freshbooks_connect'),
-    path('connect/sage/', views.connect_to_qb, name='sage_connect'),
-    path('connect/mondaydotcom/', views.connect_to_qb, name='mondaydotcom_connect'),
-
-    # path("success/", views.integration_success, name="success"),
-    # path("quickbooks/redirect/", views.qb_auth_code_handler, name="redirect_quickbooks"),
-    # path("quickbooks/connect/", views.connect_to_qb, name="connect_quickbooks"),
-    # path("quickbooks/", views.quickbooks_integration, name="new_quickbooks"),
+    path('connect/quickbooks/', views.quickbooks_auth2, name='quickbooks_connect'),
+    path('callback/quickbooks/', views.quickbooks_callback2, name='quickbooks_callback'),
+    path('fetch/quickbooks/', pulls2.fetch_quickbooks_data, name='quickbooks_fetch'),
+    path('connect/hubspot/', views.hubspot_auth, name='hubspot_connect'),
+    path('callback/hubspot/', views.hubspot_callback2, name='hubspot_callback'),
+    path('connect/stripe/', views.stripe_auth, name='stripe_connect'),
+    path('callback/stripe/', views.stripe_callback, name='stripe_callback'),
+    path('connect/jira/', views.jira_auth, name='jira_connect'),
+    path('callback/jira/', views.jira_callback, name='jira_callback'),
+    path('connect/datadog/', views.datadog_auth, name='datadog_connect'),
+    path('callback/datadog/', views.datadog_callback, name='datadog_callback'),
+    path('connect/salesforce/', views.hubspot_auth, name='salesforce_connect'),
+    path('connect/xero/', views.hubspot_auth, name='xero_connect'),
+    path('connect/mailchimp/', views.hubspot_auth, name='mailchimp_connect'),
+    path('connect/zoho/', views.hubspot_auth, name='zoho_connect'),
+    path('connect/activecampaign/', views.hubspot_auth, name='activecampaign_connect'),
+    path('connect/freshbooks/', views.hubspot_auth, name='freshbooks_connect'),
+    path('connect/sage/', views.hubspot_auth, name='sage_connect'),
+    path('connect/mondaydotcom/', qb_expenses_clean, name='mondaydotcom_connect'),
 ]

@@ -1,0 +1,33 @@
+{% extends '_base.html' %}
+{% load humanize %}
+{% load static %}
+
+{% block title %}
+Cash Flow
+{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+<h1>Cash Flow</h1>
+<h1></h1>
+<div class="grid-container">
+  {% for metric in metrics %}
+    <div class="metric-box" onclick="showCallout('{{ metric.name }}')">
+      <h2>{{ metric.name }}</h2>
+      <p>${{ metric.value|intcomma }}</p>
+      <p class="{% if metric.growth_rate > 5 %}positive{% elif metric.growth_rate < -5 %}negative{% else %}neutral{% endif %}">
+        {{ metric.growth_rate }}%
+      </p>
+    </div>
+  {% endfor %}
+</div>
+
+<div class="callout-box" id="callout" onclick="hideCallout()">
+  <div class="callout-content" onclick="event.stopPropagation();">
+    <span class="close-button" onclick="hideCallout()">&times;</span>
+    <div id="highcharts-graph" style="width:100%; height:400px;"></div>
+  </div>
+</div>
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="{% static 'js/dashboard.js' %}"></script>
+{% endblock %}

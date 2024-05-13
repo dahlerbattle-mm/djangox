@@ -4,4 +4,12 @@
 
 {% block content %}
 <h1>About page</h1>
+<p>Welcome to our about page. Learn more about us and feel free to reach out with the form below.</p>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Send</button>
+</form>
+
 {% endblock content %}

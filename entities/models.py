@@ -1,6 +1,7 @@
 from django.db import models
 from django.conf import settings
 from accounts.models import CustomUser
+from dashboards.models import DashboardData
 from django.contrib.postgres.fields import ArrayField
 import random
 
@@ -27,6 +28,7 @@ SECTOR_CHOICES = (
     )
 
 P_AND_L_CATEGORY_CHOICES = (
+        ('revenue', 'Revenue'), 
         ('cogs', 'COGS'), 
         ('g&a', 'G&A'),
         ('s&m', 'S&M'),
@@ -71,6 +73,7 @@ P_AND_L_SUBCATEGORY_CHOICES = (
 
 # mmCompanies Model
 class mmCompanies(models.Model):
+    """Saves a user's company information"""
     # Relationship to User model
     mmc_id = models.CharField(max_length=255)
     name = models.CharField(max_length=255)
@@ -82,12 +85,11 @@ class mmCompanies(models.Model):
     size = models.CharField(max_length=100, choices=SIZE_CHOICES)
     sector = models.CharField(max_length=100, choices=SECTOR_CHOICES)
     s3_url = models.URLField(max_length=200, blank=True, null=True)
-    quartile1_price = models.IntegerField(blank=True, null=True)
-    quartile2_price = models.IntegerField(blank=True, null=True)
-    quartile3_price = models.IntegerField(blank=True, null=True)
-    quartile4_price = models.IntegerField(blank=True, null=True)
+    low_tier_price = models.IntegerField(blank=True, null=True)
+    mid_tier_price = models.IntegerField(blank=True, null=True)
+    upper_tier_price = models.IntegerField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    updated_at = models.DateTimeField(auto_now_add=True)
 
     def save(self, *args, **kwargs):
         if not self.mmc_id:  # Generate profile_id only if it's not already set
@@ -131,6 +133,9 @@ class GlobalCompanies(models.Model):
 
 def generate_random_gc_id():
     return "gc_id_" + str(random.randint(100000, 999999))
+
+def in_global_companies(name, url):
+    return GlobalCompanies.objects.filter(url=url, name=name).exists()
 
 def add_global_company(name, url=None, mm_companies=None, image=None, city=None, state=None, country=None, company_size=None, sector=None, mm_company_list=None):
     """Create and save a new GlobalCompany instance with various optional fields."""

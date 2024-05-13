@@ -1,18 +1,34 @@
 > A batteries-included Django starter project. To learn more visit [LearnDjango.com](https://learndjango.com).
 
 
-https://github.com/wsvincent/djangox/assets/766418/a73ea730-a7b4-4e53-bf51-aa68f6816d6a
+### Getting Started with Docker
+
+Use the following commands to build the Docker image, run the container, and execute the standard commands within Docker.
+
+```
+$ sudo docker-compose up -d --build
+$ sudo docker-compose exec web python manage.py migrate
+$ sudo docker-compose exec web python manage.py createsuperuser
+# Load the site at http://127.0.0.1:8000
+```
 
 ## Starting up with ngrok
-docker run --net=host -it -e NGROK_AUTHTOKEN=2bsabaYSp28A1B1Q5cwASLC5W0H_5RDUBPMRnKgCMMSrmNrWZ ngrok/ngrok:latest http --domain=officially-fast-condor.ngrok-free.app 8000^C
+Use the following commands to start the ngrok site, which allows the user to see MM website on a publically facing http address. 
 
-# Running docker container commands
+```
+docker run --net=host -it -e NGROK_AUTHTOKEN=2bsabaYSp28A1B1Q5cwASLC5W0H_5RDUBPMRnKgCMMSrmNrWZ ngrok/ngrok:latest http --domain=officially-fast-condor.ngrok-free.app 8000
+```
+
+## Running docker container commands
+Make sure to run everything within the docker container when making updates, etc. 
+
+```
 sudo docker-compose exec web ..... 
 
 Oftentimes this will look like: 
 sudo docker-compose exec web python manage.py check 
 ... or other django related commands
-
+```
 
 ## 🚀 Features
 
@@ -26,101 +42,12 @@ sudo docker-compose exec web python manage.py check
 - Custom 404, 500, and 403 error pages
 ----
 
-## Table of Contents
-* **[Installation](#installation)**
-  * [Pip](#pip)
-  * [Docker](#docker)
-* [Next Steps](#next-steps)
-* [Contributing](#contributing)
-* [Support](#support)
-* [License](#license)
-
 ----
 
-## 📖 Installation
-DjangoX can be installed via Pip or Docker. To start, clone the repo to your local computer and change into the proper directory.
-
-```
-$ git clone https://github.com/wsvincent/djangox.git
-$ cd djangox
-```
-
-### Pip
-
-```
-$ python -m venv .venv
-
-# Windows
-$ Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
-$ .venv\Scripts\Activate.ps1
-
-# macOS
-$ source .venv/bin/activate
-
-(.venv) $ pip install -r requirements.txt
-(.venv) $ python manage.py migrate
-(.venv) $ python manage.py createsuperuser
-(.venv) $ python manage.py runserver
-# Load the site at http://127.0.0.1:8000
-```
-
-### Docker
-
-To use Docker with PostgreSQL as the database update the `DATABASES` section of `django_project/settings.py` to reflect the following:
-
-```python
-# django_project/settings.py
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": "postgres",
-        "USER": "postgres",
-        "PASSWORD": "postgres",
-        "HOST": "db",  # set in docker-compose.yml
-        "PORT": 5432,  # default postgres port
-    }
-}
-```
-
-The `INTERNAL_IPS` configuration in `django_project/settings.py` must be also be updated:
-
-```python
-# config/settings.py
-# django-debug-toolbar
-import socket
-hostname, _, ips = socket.gethostbyname_ex(socket.gethostname())
-INTERNAL_IPS = [ip[:-1] + "1" for ip in ips]
-```
-
-And then proceed to build the Docker image, run the container, and execute the standard commands within Docker.
-
-```
-$ docker-compose up -d --build
-$ docker-compose exec web python manage.py migrate
-$ docker-compose exec web python manage.py createsuperuser
-# Load the site at http://127.0.0.1:8000
-```
-
 ## Next Steps
-
-- Add environment variables. There are multiple packages but I personally prefer [environs](https://pypi.org/project/environs/).
 - Add [gunicorn](https://pypi.org/project/gunicorn/) as the production web server.
 - Update the [EMAIL_BACKEND](https://docs.djangoproject.com/en/4.0/topics/email/#module-django.core.mail) and connect with a mail provider.
 - Make the [admin more secure](https://opensource.com/article/18/1/10-tips-making-django-admin-more-secure).
 - `django-allauth` supports [social authentication](https://django-allauth.readthedocs.io/en/latest/providers.html) if you need that.
 
-I cover all of these steps in tutorials and premium courses over at [LearnDjango.com](https://learndjango.com).
 
-----
-
-## 🤝 Contributing
-
-Contributions, issues and feature requests are welcome! See [CONTRIBUTING.md](https://github.com/wsvincent/djangox/blob/master/CONTRIBUTING.md).
-
-## ⭐️ Support
-
-Give a ⭐️  if this project helped you!
-
-## License
-
-[The MIT License](LICENSE)

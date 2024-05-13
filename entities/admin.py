@@ -4,6 +4,7 @@ from .forms import CompanyForm
 
 # Profile admin interface
 class mmCompaniesAdmin(admin.ModelAdmin):
+    """Admin view for the MetricMatters customers (mmCompanies)"""
     # add_form = N/A
     form = CompanyForm
     model = mmCompanies
@@ -14,6 +15,7 @@ admin.site.register(mmCompanies, mmCompaniesAdmin)
 
 # Profile admin interface
 class GlobalCompaniesAdmin(admin.ModelAdmin):
+    """Admin view for mmCompany's customers and vendors"""
     # add_form = N/A
     # form = CompanyForm
     model = GlobalCompanies

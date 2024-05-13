@@ -4,8 +4,15 @@ import random
 import requests
 from django.conf import settings
 
+def get_current_user(request):
+    """Gets a current user if they are authenticated"""
+    if request.user.is_authenticated:
+        return request.user
+    return None
+
 
 def getBearerToken(auth_code: str):
+    """Retrieves a bearer token from an authorization code and a string"""
     # TODO: token_endpoint should technically be in environment variables
     token_endpoint = "https://oauth.platform.intuit.com/oauth2/v1/tokens/bearer"
     # TODO: this client_id and secret **might** need to come from the user, otherwise, put in settings
@@ -57,11 +64,13 @@ def getRandomString(
 
 # Create a random secret key. Source from the django.utils.crypto module.
 def getSecretKey():
+    """Develops a secret key"""
     chars = "abcdefghijklmnopqrstuvwxyz0123456789"
     return getRandomString(40, chars)
 
 
 def get_CSRF_token(request):
+    """Develops a CSRF Token"""
     token = request.session.get("csrfToken", None)
     if token is None:
         token = getSecretKey()

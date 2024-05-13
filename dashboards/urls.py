@@ -13,4 +13,6 @@ urlpatterns = [
     path('dashboard/pipeline/', views.pipeline_view, name="pipeline"),
     path('dashboard/product/', views.product_view, name="product"),
     path('dashboard/services/', views.services_view, name="services"),
+    path('dashboard/hr/', views.hr_view, name="hr"),
+    path('dashboard/cashflow/', views.cashflow_view, name="cashflow"),
 ]

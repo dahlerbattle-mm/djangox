@@ -1,0 +1,98 @@
+{% extends '_base.html' %}
+{% load humanize %}
+
+{% block title %}HR{% endblock %}
+
+{% block content %}
+<style>
+  .grid-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 columns */
+    gap: 10px; /* spacing between boxes */
+    padding: 10px; /* padding around the grid */
+  }
+  
+  .metric-box {
+    border: 1px solid #ddd;
+    border-radius: 10px; /* Slightly rounded corners */
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+    background-color: #fff; /* Assuming you want a white background */
+  }
+
+  .metric-box h2,
+  .metric-box p {
+    margin: 10px 0; /* Add space between the title and values */
+    font-size: 1.2em; /* Larger text */
+  }
+  
+  .positive {
+    color: green;
+    font-size: 1.5em; /* Even larger text for values */
+  }
+  
+  .negative {
+    color: red;
+    font-size: 1.25em;
+  }
+  
+  .neutral {
+    color: darkgrey; /* Changed from yellow to dark grey */
+    font-size: 1.25em;
+  }
+  
+  .callout-box {
+    display: none;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 2;
+  }
+  
+  .callout-content {
+    background: #fff;
+    width: 60%;
+    margin: 100px auto;
+    padding: 20px;
+    position: relative;
+    z-index: 3;
+  }
+</style>
+
+<h1>HR</h1>
+<div class="grid-container">
+  {% for metric in metrics %}
+    <div class="metric-box" onclick="showCallout()">
+      <h2>{{ metric.name }}</h2>
+      <p>${{ metric.value|intcomma }}</p>
+      <p class="{% if metric.growth_rate > 5 %}positive{% elif metric.growth_rate < -5 %}negative{% else %}neutral{% endif %}">
+        {{ metric.growth_rate }}%
+      </p>
+    </div>
+  {% endfor %}
+</div>
+
+<div class="callout-box" id="callout">
+  <div class="callout-content">
+    <!-- Highcharts graph will be inserted here later -->
+    <p>Graph placeholder</p>
+  </div>
+</div>
+
+<script>
+function showCallout() {
+  document.getElementById('callout').style.display = 'block';
+}
+
+window.onclick = function(event) {
+  let calloutBox = document.getElementById('callout');
+  if (event.target == calloutBox) {
+    calloutBox.style.display = 'none';
+  }
+}
+</script>
+{% endblock %}

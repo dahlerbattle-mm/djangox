@@ -7,6 +7,7 @@ from .models import CustomUser, Profile
 
 # User admin interface
 class CustomUserAdmin(UserAdmin):
+    """Provides an admin view of the CustomUsers created."""
     add_form = CustomUserCreationForm
     form = CustomUserChangeForm
     model = CustomUser
@@ -16,7 +17,7 @@ admin.site.register(CustomUser, CustomUserAdmin)
 
 # Profile admin interface
 class ProfileAdmin(admin.ModelAdmin):
-    # add_form = N/A
+    """Provides an admin view of the Profiles created."""
     form = ProfileForm
     model = Profile
     list_display = ['profile_id', 'first_name', 'last_name', 'title', 'created_at',]
