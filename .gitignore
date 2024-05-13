@@ -13,3 +13,9 @@ media
 
 # Virtual environment
 .venv
+
+#enviornmental variables
+.env
+
+node_modules/
+*.log
